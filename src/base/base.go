@@ -81,7 +81,7 @@ func CreateKey(key string) string {
 
 func GeneratePassword(leng int, minSpecialChars int, minMumbers int, minUppercase int) string {
 	if leng < 16 {
-		println("The minimun length for the key is 16 characters.")
+		println("The minimun length for an password is 16 characters.")
 	}
 	var password strings.Builder
 	var counter int = 0
