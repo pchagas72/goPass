@@ -9,7 +9,7 @@ import (
 func main() {
 	var password string = base.GeneratePassword(16, 1, 1, 1)
 	println(password)
-	var key string = base.CreateKey("senha super segura")
+	var key string = base.CreateKey("a12323sdf")
 	println(key)
 	println("key OK")
 	println(len(key))
@@ -24,5 +24,7 @@ func main() {
 	cipher_decrypted := encrypt.Decrypt(cipher_decoded, key)
 	println("Decrypt OK")
 	println(cipher_decrypted)
+
+	// println(base.GenerateFillKey("aaa***AAA111"))
 
 }

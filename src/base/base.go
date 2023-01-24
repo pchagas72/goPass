@@ -8,34 +8,43 @@ import (
 
 var lettersArray []rune = []rune{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
 var numbersArray []rune = []rune{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
-var specialCharactersArray []rune = []rune{'!', '@', '#', '$', '%', '&', '*'}
+var specialCharactersArray []rune = []rune{'!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.'}
 var all_arrays [][]rune = [][]rune{lettersArray, numbersArray, specialCharactersArray}
-var charsMap map[rune]string
 
+func Check(err error) {
+	if err != nil {
+		println("An error ocurred.")
+		println(err)
+	}
+}
+
+// This function fills a master key with predictable characters based on the key length, not so secure. But it works.
+// In the future I may change this to the number of lowercase letters, numbers and symbols.
 func AddKeyChars(key string) string {
 	var leng int = len(key)
 	var llen int = 32 - leng
+	var fill_element_key = llen
 	var counter int = 0
 	var i int = 0
 	var new_key string = key
 	for i < llen {
 		if counter == 0 {
 			if llen-i < len(lettersArray) {
-				new_key += string(lettersArray[llen-i])
+				new_key += string(lettersArray[fill_element_key-i])
 			} else {
 				new_key += string(lettersArray[0])
 			}
 			counter++
 		} else if counter == 1 {
 			if llen-i < len(numbersArray) {
-				new_key += string(numbersArray[llen-i])
+				new_key += string(numbersArray[fill_element_key-i])
 			} else {
 				new_key += string(numbersArray[0])
 			}
 			counter++
 		} else if counter == 2 {
 			if llen-i < len(specialCharactersArray) {
-				new_key += string(specialCharactersArray[llen-i])
+				new_key += string(specialCharactersArray[fill_element_key-i])
 			} else {
 				new_key += string(specialCharactersArray[0])
 			}
@@ -46,13 +55,6 @@ func AddKeyChars(key string) string {
 	return new_key
 }
 
-func Check(err error) {
-	if err != nil {
-		println("An error ocurred.")
-		println(err)
-	}
-}
-
 func getRandomCharacter() rune {
 	var random_array_index int = rand.Intn(len(all_arrays))
 	var random_array []rune = all_arrays[random_array_index]
@@ -61,14 +63,12 @@ func getRandomCharacter() rune {
 }
 
 func addToKey(password string) string {
-	var password_chars []rune = []rune(password)
 	var leng int = len(password)
 	var llen int = 32 - leng
 	for i := 0; i < llen; i++ {
-		var random_rune rune = getRandomCharacter() // change this line to a password-specific one
-		password_chars = append(password_chars, random_rune)
+		password = AddKeyChars(password)
 	}
-	return string(password_chars)
+	return password
 }
 
 func CreateKey(key string) string {
@@ -79,6 +79,7 @@ func CreateKey(key string) string {
 	return key
 }
 
+// This function creates an random (and somewhat secure) password.
 func GeneratePassword(leng int, minSpecialChars int, minMumbers int, minUppercase int) string {
 	if leng < 16 {
 		println("The minimun length for an password is 16 characters.")
