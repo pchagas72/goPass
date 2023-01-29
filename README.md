@@ -1,2 +1,2 @@
 ### GoPass
-I wanted to do some stuff using golang.
+I wanted to do some stuff using go.
